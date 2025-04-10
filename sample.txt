@@ -1,0 +1,51 @@
+✅ STEP 3: ESP32 <-> ThingSpeak Logic
+ESP32 will:
+
+Send data: Update slot status on ThingSpeak
+
+Read commands: Read from field5 (PARK or RETRIEVE)
+
+You’ll use HTTP GETs from ESP32:
+
+#include <WiFi.h>
+#include <HTTPClient.h>
+
+const char* ssid = "your_wifi";
+const char* password = "your_password";
+const String writeAPIKey = "YOUR_WRITE_KEY";
+const String channelID = "YOUR_CHANNEL_ID";
+
+void setup() {
+  Serial.begin(115200);
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) delay(500);
+}
+
+void loop() {
+  // 1. Push slot status
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+    String url = "https://api.thingspeak.com/update?api_key=" + writeAPIKey +
+                 "&field1=0&field2=1&field3=0&field4=1";  // 0 = available, 1 = occupied
+    http.begin(url);
+    int httpCode = http.GET();
+    http.end();
+  }
+
+  // 2. Read command
+  HTTPClient http;
+  http.begin("https://api.thingspeak.com/channels/" + channelID + "/fields/5/last.txt");
+  int httpCode = http.GET();
+  if (httpCode == 200) {
+    String payload = http.getString();
+    Serial.println("Command: " + payload);
+    if (payload == "PARK") {
+      // Start parking logic
+    } else if (payload == "RETRIEVE") {
+      // Start retrieval logic
+    }
+  }
+  http.end();
+
+  delay(10000);  // update every 10 seconds
+}

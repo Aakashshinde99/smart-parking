@@ -1,0 +1,48 @@
+body {
+    font-family: sans-serif;
+    text-align: center;
+    background: #f4f4f4;
+    padding: 30px;
+  }
+  
+  #status {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+  
+  #slots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+  }
+  
+  .slot {
+    padding: 20px;
+    border: 2px solid #333;
+    border-radius: 10px;
+    background-color: #fff;
+    min-width: 80px;
+  }
+  
+  .slot.occupied {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .slot.available {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  #actions button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 10px;
+  }
+  
+  #response {
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  
